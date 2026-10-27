@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Mi biblioteca</title>
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/style.css">
+        <script src="js/script.js" defer></script>
+    </head>
+
+    <body>
+        <header>
+            <div>
+                <h1>
+                    <a href="index.html">Mi biblioteca 📖 · <span id="total-libros">0</span> libros</a>
+                </h1>
+                <p>Espacio personal de lectura</p>
+            </div>
+
+            <form>
+                <input type="search" placeholder="Buscar un libro...">
+                <button type="submit">🔍</button>
+            </form>
+
+            <div class="estadisticas">
+                <button class="estadistica" type="button">
+                    <span aria-hidden="true">✓</span>
+                    <span id="total-leidos">0</span>
+                    <span>leídos</span>
+                </button>
+
+                <button class="estadistica" type="button">
+                    <span aria-hidden="true">♡</span>
+                    <span id="total-favoritos">0</span>
+                    <span>favoritos</span>
+                </button>
+
+                <button class="estadistica" type="button">
+                    <span aria-hidden="true">⏳</span>
+                    <span id="total-pendientes">0</span>
+                    <span>pendientes</span>
+                </button>
+            </div>
+            
+        </header>
+
+        <main>
+            <section id="filtros">
+                <h2>Filtrar libros</h2>
+
+                <div>
+                    <p>Género</p>
+                    <button type="button">Todos</button>
+                    <button type="button">Fantasía</button>
+                    <button type="button">Terror</button>
+                    <button type="button">Suspense</button>
+                    <button type="button">Thriller</button>
+                    <button type="button">Novela histórica</button>
+                </div>
+            </section>
+            <section id="biblioteca">
+                <h2>Mis libros</h2>
+                
+                <div class="catalogo-libros">
+            
+                </div>
+            </section>
+        </main>
+        <footer>
+            <p>© 2026 EvaCh · Biblioteca personal</p>
+        </footer>
+    </body>
+</html>

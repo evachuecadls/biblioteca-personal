@@ -1,0 +1,261 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #F7F5EF;
+    color: #465158;
+}
+
+/*seccion header*/
+header {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    padding: 20px 40px;
+    border-bottom: 1px solid #CBD5E1;
+
+    background-image: url("../img/fondo-header.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 1.8rem;
+    font-weight: 600;
+}
+header div p {
+    margin: 2px 0 0;
+    font-size: 0.85rem;
+    opacity: 0.65;
+}
+
+header h1 a {
+    color: inherit;
+    text-decoration: none;
+
+}
+.cabecera-principal {
+    flex-shrink: 0;
+}
+
+header form {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    max-width: 420px;
+    margin-left: auto;
+}
+
+header input {
+    padding: 8px 12px;
+    border: 1px solid #CBD5E1;
+    border-radius: 8px 0 0 8px;
+    background-color: transparent;
+    font: inherit;
+    flex: 1;
+}
+
+header button {
+    padding: 8px 12px;
+    border: 1px solid #CBD5E1;
+    border-left: 0;
+    border-radius: 0 8px 8px 0;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+main {
+    padding: 0 40px 40px;
+}
+
+.estadisticas {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    white-space: nowrap;
+}
+
+.estadistica {
+    padding: 0;
+    border: none;
+    background: none;
+    color: #465158;
+    font: inherit;
+    font-size: 0.85rem;
+    cursor: pointer;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+
+}
+/*seccion filtros*/
+
+#filtros {
+    margin: 30px 0;
+}
+
+#filtros h2 {
+    margin: 0 0 15px;
+    font-size: 1.4rem;
+    font-weight: 500;
+}
+
+#filtros > div {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+}
+
+#filtros p {
+    margin: 0 8px 0 0;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+#filtros button {
+    padding: 6px 12px;
+    border: 1px solid #CBD5CE;
+    border-radius: 20px;
+    background-color: transparent;
+    color: #465158;
+    font: inherit;
+    font-size: 0.8rem;
+    cursor: pointer;
+}
+
+#filtros button:hover {
+    background-color: #E7ECE8;
+}
+
+/*seccion libros*/
+
+#biblioteca {
+    margin-top: 30px;
+}
+
+.catalogo-libros {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(180px, 220px));
+    gap: 25px;
+    justify-content: start;
+}
+
+.libro {
+    padding: 15px;
+    border: 1px solid #D8DED9;
+    border-radius: 10px;
+    background-color: #F2F0E8;
+    display: flex;
+    flex-direction: column;
+}
+.libro img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 2 / 3;
+    object-fit: cover;
+    border-radius: 6px;
+    margin-bottom: 0;
+}
+
+.portada-libro {
+    position: relative;
+    margin-bottom: 12px;
+}
+
+.estado-libro,
+.favorito-libro {
+    position: absolute;
+    padding: 0;
+    border: none;
+    background: none;
+    color: white;
+    font: inherit;
+    cursor: pointer;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
+}
+
+.estado-libro {
+    bottom: 8px;
+    right: 12px;
+    padding: 0;
+    font-size: 0.72rem;
+    opacity: 0.30;
+}
+
+.favorito-libro {
+    top: 8px;
+    left: 8px;
+    font-size: 1.5rem;
+}
+
+.libro h3 {
+    margin: 0 0 4px;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.libro p {
+    margin: 2px 0;
+    font-size: 0.85rem;
+}
+
+.libro p:last-of-type {
+    margin-top: 8px;
+    font-size: 0.8rem;
+}
+
+
+/* Footer */
+footer {
+    margin-top: 40px;
+    padding: 18px 40px;
+    border-top: 1px solid #CBD5E1;
+    text-align: center;
+    font-size: 0.8rem;
+    color: #465158;
+    opacity: 0.75;
+}
+
+.estado-libro.activo {
+    opacity: 1;
+}
+
+/*responsive*/
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 15px;
+        padding: 20px;
+    }
+
+    main {
+        padding: 0 20px 30px;
+    }
+
+
+    .estadisticas {
+        justify-content: space-between;
+    }
+
+    header form {
+        width: 100%;
+    }
+
+    header input {
+        flex: 1;
+    }
+
+    .catalogo-libros {
+    grid-template-columns: repeat(2, minmax(140px, 180px));
+    justify-content: center;
+    }
+    footer {
+    padding: 18px 20px;
+    }
+}
