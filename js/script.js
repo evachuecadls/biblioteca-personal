@@ -5,6 +5,7 @@ const librosIniciales = [
         titulo: "La bella y la bestia",
         autor: "Liz Braswell",
         genero: "Fantasía",
+        idioma: "Español",
         portada: "img/portadas/la-bella-y-la-bestia.webp",
         valoracion: 4.5,
         leido: false,
@@ -15,6 +16,7 @@ const librosIniciales = [
         titulo: "Apocalypse",
         autor: "Tim Bowler",
         genero: "Terror",
+        idioma: "Español",
         portada: "img/portadas/apocalypse.webp",
         valoracion: 4.5,
         leido: false,
@@ -35,13 +37,35 @@ const libros = librosGuardados
     ? JSON.parse(librosGuardados)
     : librosIniciales;
 
-// Guarda el filtro de estado que está seleccionado actualmente.
+// Comprueba si los libros guardados necesitan incorporar el idioma.
+let seActualizoIdioma = false;
+
+// Recorre los libros que utiliza actualmente la biblioteca.
+libros.forEach(libro => {
+
+    // Busca los datos iniciales del mismo libro.
+    const libroInicial = librosIniciales.find(
+        libroOriginal => libroOriginal.id === libro.id
+    );
+
+    // Añade el idioma inicial solo si todavía no existe en el libro guardado.
+    if (libro.idioma === undefined && libroInicial?.idioma) {
+        libro.idioma = libroInicial.idioma;
+        seActualizoIdioma = true;
+    }
+});
+
+// Guarda los libros actualizados sin alterar sus estados de lectura y favoritos.
+if (seActualizoIdioma) {
+    localStorage.setItem("biblioteca-libros", JSON.stringify(libros));
+}
+
+// Guarda los filtros seleccionados (Estado/género/idioma).
 // "todos" significa que se muestran todos los libros.
 let filtroEstadoActivo = "todos";
-
-// Guarda el género seleccionado actualmente.
-// "todos" significa que no se aplica ningún filtro por género.
+// "todos" significa que no se aplica ningún filtro por género o idioma
 let filtroGeneroActivo = "todos";
+let filtroIdiomaActivo = "todos";
 
 // Guarda el array completo de libros en el almacenamiento del navegador.
 function guardarLibros() {
@@ -99,8 +123,13 @@ function mostrarLibros() {
             filtroGeneroActivo === "todos" ||
             libro.genero === filtroGeneroActivo;
 
-        // El libro debe cumplir tanto el filtro de estado como el de género.
-        return coincideEstado && coincideGenero;
+        // Comprueba si el libro coincide con el idioma seleccionado.
+        const coincideIdioma =
+            filtroIdiomaActivo === "todos" ||
+            libro.idioma === filtroIdiomaActivo;
+
+        // El libro debe cumplir todos los filtros activos.
+        return coincideEstado && coincideGenero && coincideIdioma;
     });
 
     // Muestra un mensaje si ningún libro coincide con el filtro.
@@ -250,6 +279,18 @@ function actualizarBotonesFiltroGenero() {
     });
 }
 
+// Actualiza el aspecto y la accesibilidad de los botones de idioma, mismo funcionamiento que "function actualizarBotonesFiltroGenero()"
+function actualizarBotonesFiltroIdioma() {
+
+    document.querySelectorAll("[data-filtro-idioma]").forEach(boton => {
+
+        const estaActivo =
+            boton.dataset.filtroIdioma === filtroIdiomaActivo;
+
+        boton.classList.toggle("activo", estaActivo);
+        boton.setAttribute("aria-pressed", estaActivo);
+    });
+}
 
 // Gestiona los clics en los filtros de género.
 document.querySelector("#filtros").addEventListener("click", (evento) => {
@@ -287,3 +328,31 @@ document.querySelector("#filtros").addEventListener("click", (evento) => {
 
 // Inicializa el aspecto de los botones de género al abrir la página.
 actualizarBotonesFiltroGenero();
+
+// Gestiona los clics en los filtros de idioma, mismo funcionamiento que el de gestion de clics en los filtros de género.
+document.querySelector("#filtros").addEventListener("click", (evento) => {
+
+    const boton = evento.target.closest("button[data-filtro-idioma]");
+
+    if (!boton) return;
+
+    const idiomaSeleccionado = boton.dataset.filtroIdioma;
+
+    if (idiomaSeleccionado === "todos") {
+        filtroIdiomaActivo = "todos";
+    }
+
+    else if (filtroIdiomaActivo === idiomaSeleccionado) {
+        filtroIdiomaActivo = "todos";
+    }
+
+    else {
+        filtroIdiomaActivo = idiomaSeleccionado;
+    }
+
+    actualizarBotonesFiltroIdioma();
+    mostrarLibros();
+});
+
+// Inicializa los botones de idioma al abrir la página.
+actualizarBotonesFiltroIdioma();
