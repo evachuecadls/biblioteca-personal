@@ -35,6 +35,14 @@ const libros = librosGuardados
     ? JSON.parse(librosGuardados)
     : librosIniciales;
 
+// Guarda el filtro de estado que está seleccionado actualmente.
+// "todos" significa que se muestran todos los libros.
+let filtroEstadoActivo = "todos";
+
+// Guarda el género seleccionado actualmente.
+// "todos" significa que no se aplica ningún filtro por género.
+let filtroGeneroActivo = "todos";
+
 // Guarda el array completo de libros en el almacenamiento del navegador.
 function guardarLibros() {
     localStorage.setItem("biblioteca-libros", JSON.stringify(libros));
@@ -65,8 +73,45 @@ function actualizarEstadisticas() {
 // Genera las tarjetas de los libros a partir de los datos del array.
 function mostrarLibros() {
 
-    // Reemplaza el contenido del catálogo por las tarjetas generadas.
-    catalogoLibros.innerHTML = libros.map(libro => `
+    // Selecciona los libros que coinciden con los filtros activos.
+    const librosFiltrados = libros.filter(libro => {
+
+        // Comprueba si el libro coincide con el estado seleccionado.
+        let coincideEstado = true;
+
+        // Si el filtro es "leido", comprueba que el libro esté leído.
+        if (filtroEstadoActivo === "leido") {
+            coincideEstado = libro.leido;
+        }
+
+        // Si el filtro es "favorito", comprueba que sea favorito.
+        else if (filtroEstadoActivo === "favorito") {
+            coincideEstado = libro.favorito;
+        }
+
+        // Si el filtro es "pendiente", comprueba que no esté leído.
+        else if (filtroEstadoActivo === "pendiente") {
+            coincideEstado = !libro.leido;
+        }
+
+        // Comprueba si el libro coincide con el género seleccionado.
+        const coincideGenero =
+            filtroGeneroActivo === "todos" ||
+            libro.genero === filtroGeneroActivo;
+
+        // El libro debe cumplir tanto el filtro de estado como el de género.
+        return coincideEstado && coincideGenero;
+    });
+
+    // Muestra un mensaje si ningún libro coincide con el filtro.
+    if (librosFiltrados.length === 0) {
+        catalogoLibros.innerHTML =
+            '<p class="mensaje-vacio">No hay libros que mostrar con este filtro.</p>';
+        return;
+    }
+
+    // Genera las tarjetas de los libros filtrados y las muestra en el catálogo.
+    catalogoLibros.innerHTML = librosFiltrados.map(libro => `
         <article class="libro">
 
             <div class="portada-libro">
@@ -134,10 +179,111 @@ catalogoLibros.addEventListener("click", (evento) => {
 
     // Guarda los cambios de lectura y favoritos en el navegador.
     guardarLibros();
-    
+
     // Volvemos a generar las tarjetas para reflejar los cambios visuales.
     mostrarLibros();
 
     // Recalculamos los contadores con los nuevos estados.
     actualizarEstadisticas();
 });
+
+// Actualiza el aspecto y la accesibilidad de los botones de filtro.
+function actualizarBotonesFiltroEstado() {
+
+    // Recorre los botones de estado del encabezado.
+    document.querySelectorAll("[data-filtro-estado]").forEach(boton => {
+
+        // Comprueba si este botón corresponde al filtro seleccionado.
+        const estaActivo = boton.dataset.filtroEstado === filtroEstadoActivo;
+
+        // Aplica o elimina la clase visual del filtro activo.
+        boton.classList.toggle("activo", estaActivo);
+
+        // Indica si el botón está seleccionado.
+        boton.setAttribute("aria-pressed", estaActivo);
+    });
+}
+
+// Gestiona los clics en los filtros de estado del encabezado.
+document.querySelector(".estadisticas").addEventListener("click", (evento) => {
+
+    // Identifica el botón de filtro que se ha pulsado.
+    const boton = evento.target.closest("button[data-filtro-estado]");
+
+    // Ignora los clics que no procedan de un filtro.
+    if (!boton) return;
+
+    // Obtiene el tipo de filtro seleccionado.
+    const filtroSeleccionado = boton.dataset.filtroEstado;
+
+    // Si ya estaba activo, vuelve a mostrar todos los libros.
+    // Si era otro filtro, lo convierte en el filtro activo.
+    filtroEstadoActivo = filtroEstadoActivo === filtroSeleccionado
+        ? "todos"
+        : filtroSeleccionado;
+
+    // Actualiza el aspecto visual de los botones.
+    actualizarBotonesFiltroEstado();
+
+    // Actualiza el catálogo según el filtro elegido.
+    mostrarLibros();
+});
+
+// Inicializa el aspecto de los filtros al abrir la página.
+actualizarBotonesFiltroEstado();
+
+// Actualiza el aspecto de los botones de género.
+function actualizarBotonesFiltroGenero() {
+
+    // Recorre todos los botones que permiten filtrar por género.
+    document.querySelectorAll("[data-filtro-genero]").forEach(boton => {
+
+        // Comprueba si el género del botón coincide con el filtro activo.
+        const estaActivo =
+            boton.dataset.filtroGenero === filtroGeneroActivo;
+
+        // Añade o quita la clase visual del botón seleccionado.
+        boton.classList.toggle("activo", estaActivo);
+
+        // Actualiza el estado accesible del botón.
+        boton.setAttribute("aria-pressed", estaActivo);
+    });
+}
+
+
+// Gestiona los clics en los filtros de género.
+document.querySelector("#filtros").addEventListener("click", (evento) => {
+
+    // Identifica si se ha pulsado un botón de género.
+    const boton = evento.target.closest("button[data-filtro-genero]");
+
+    // Si el clic no procede de un botón de género, no hacemos nada.
+    if (!boton) return;
+
+    // Obtiene el género correspondiente al botón pulsado.
+    const generoSeleccionado = boton.dataset.filtroGenero;
+
+    // Si seleccionamos "Todos", quitamos el filtro de género.
+    if (generoSeleccionado === "todos") {
+        filtroGeneroActivo = "todos";
+    }
+
+    // Si volvemos a pulsar el género activo, lo desactivamos.
+    else if (filtroGeneroActivo === generoSeleccionado) {
+        filtroGeneroActivo = "todos";
+    }
+
+    // Si elegimos otro género, lo convertimos en el filtro activo.
+    else {
+        filtroGeneroActivo = generoSeleccionado;
+    }
+
+    // Actualiza el aspecto de los botones de género.
+    actualizarBotonesFiltroGenero();
+
+    // Muestra los libros que cumplen los filtros seleccionados.
+    mostrarLibros();
+});
+
+// Inicializa el aspecto de los botones de género al abrir la página.
+actualizarBotonesFiltroGenero();

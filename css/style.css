@@ -132,6 +132,13 @@ main {
     background-color: #E7ECE8;
 }
 
+/* Destaca el género seleccionado actualmente. */
+#filtros button.activo {
+    background-color: #E3EAE5;
+    border-color: #789681;
+    font-weight: 600;
+}
+
 /*seccion libros*/
 
 #biblioteca {

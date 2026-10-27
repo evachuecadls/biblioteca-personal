@@ -24,19 +24,29 @@
             </form>
 
             <div class="estadisticas">
-                <button class="estadistica" type="button">
+                <button class="estadistica" 
+                type="button"
+                data-filtro-estado="leido"
+                aria-pressed="false"
+                >
                     <span aria-hidden="true">✓</span>
                     <span id="total-leidos">0</span>
                     <span>leídos</span>
                 </button>
 
-                <button class="estadistica" type="button">
+                <button class="estadistica" 
+                type="button"
+                data-filtro-estado="favorito"
+                >
                     <span aria-hidden="true">♡</span>
                     <span id="total-favoritos">0</span>
                     <span>favoritos</span>
                 </button>
 
-                <button class="estadistica" type="button">
+                <button class="estadistica" 
+                type="button"
+                data-filtro-estado="pendiente"
+                >
                     <span aria-hidden="true">⏳</span>
                     <span id="total-pendientes">0</span>
                     <span>pendientes</span>
@@ -49,14 +59,37 @@
             <section id="filtros">
                 <h2>Filtrar libros</h2>
 
+                <!-- Botones para filtrar los libros por género. -->
                 <div>
                     <p>Género</p>
-                    <button type="button">Todos</button>
-                    <button type="button">Fantasía</button>
-                    <button type="button">Terror</button>
-                    <button type="button">Suspense</button>
-                    <button type="button">Thriller</button>
-                    <button type="button">Novela histórica</button>
+
+                    <button type="button"
+                            data-filtro-genero="todos"
+                            aria-pressed="true">Todos</button>
+
+                    <button type="button"
+                            data-filtro-genero="Fantasía"
+                            aria-pressed="false">Fantasía</button>
+
+                    <button type="button"
+                            data-filtro-genero="Terror"
+                            aria-pressed="false">Terror</button>
+
+                    <button type="button"
+                            data-filtro-genero="Thriller"
+                            aria-pressed="false">Thriller</button>
+
+                    <button type="button"
+                            data-filtro-genero="Comedia"
+                            aria-pressed="false">Comedia</button>
+                    
+                    <button type="button"
+                            data-filtro-genero="Romance"
+                            aria-pressed="false">Romance</button>
+
+                    <button type="button"
+                            data-filtro-genero="Novela histórica"
+                            aria-pressed="false">Novela histórica</button>
                 </div>
             </section>
             <section id="biblioteca">
